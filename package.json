@@ -1,0 +1,23 @@
+{
+  "name": "collage-maker",
+  "version": "1.0.0",
+  "description": "Collage Maker made with Typescript",
+  "main": "index.js",
+  "repository": "https://github.com/avirati/collage-maker",
+  "author": "Avinash Verma <avinashverma.it@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "html-webpack-plugin": "^4.3.0",
+    "ts-loader": "^7.0.5",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --config webpack.config.js"
+  }
+}
