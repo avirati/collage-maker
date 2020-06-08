@@ -84,6 +84,7 @@ const insertIconWithText = (parentContainer: HTMLDivElement) => {
 };
 
 export const renderApplication = (parentContainer: HTMLDivElement, applicationWidth: number, applicationHeight: number, applicationBackgroundImage: string) => {
+  parentContainer.innerHTML = '';
   parentContainer.style.width = `${applicationWidth}px`;
   parentContainer.style.height = `${applicationHeight}px`;
   addDragNDropListeners(parentContainer);
