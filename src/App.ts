@@ -2,8 +2,33 @@ import { background } from './components/Background';
 import { getMenu } from './components/ContextMenu';
 import { IconWithText } from './components/IconWithText';
 import { spawnMovableElement } from './components/MovableElements';
+import { IApplicationData, IImage, IIconsWithText } from './interfaces';
 
 const menu = getMenu('menuContainer', 'menuItemContainer');
+
+const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageData?: IImage) => {
+  const movableElement = spawnMovableElement();
+  const image = document.createElement('img');
+  image.src = imageUrl;
+  image.onload = () => {
+    movableElement.canvas.width = image.width;
+    movableElement.canvas.height = image.height;
+    movableElement.context.drawImage(image, 0, 0);
+
+    if (imageData) {
+      // Position as per data
+      movableElement.canvas.style.left = `${imageData.left}px`;
+      movableElement.canvas.style.top = `${imageData.top}px`;
+    } else {
+      // Position canvas in center
+      const backgroundWidth = background.getDom().offsetWidth;
+      const backgroundHeight = background.getDom().offsetHeight;
+      movableElement.canvas.style.left = `${backgroundWidth / 2 - image.width / 2}px`;
+      movableElement.canvas.style.top = `${backgroundHeight / 2 - image.height / 2}px`;
+    }
+  };
+  parentContainer.appendChild(movableElement.canvas);
+}
 
 const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
   const FileSelectHandler = (event: DragEvent) => {
@@ -14,21 +39,7 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const movableElement = spawnMovableElement();
-      const image = document.createElement('img');
-      image.src = reader.result as string;
-      image.onload = () => {
-        movableElement.canvas.width = image.width;
-        movableElement.canvas.height = image.height;
-        movableElement.context.drawImage(image, 0, 0);
-
-        // Position canvas in center
-        const backgroundWidth = background.getDom().offsetWidth;
-        const backgroundHeight = background.getDom().offsetHeight;
-        movableElement.canvas.style.left = `${backgroundWidth / 2 - image.width / 2}px`;
-        movableElement.canvas.style.top = `${backgroundHeight / 2 - image.height / 2}px`;
-      };
-      parentContainer.appendChild(movableElement.canvas);
+      insertImage(reader.result as string, parentContainer);
     };
 
     reader.readAsDataURL(file);
@@ -69,29 +80,55 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
   });
 };
 
-const insertIconWithText = (parentContainer: HTMLDivElement) => {
-  const iconUrl: string = window.prompt('Please enter icon URL')!;
-  const iconTitle: string = window.prompt('Please enter a Title')!;
-  const iconDescription: string = window.prompt(`Please enter a Description for ${iconTitle}`)!;
+const insertIconWithText = (parentContainer: HTMLDivElement, iconData?: IIconsWithText) => {
+  let iconWithText: IconWithText;
+  if (iconData) {
+    iconWithText = new IconWithText(iconData.imageUrl, iconData.title, iconData.description, 'iconWithText');
+    iconWithText.dom.style.left = `${iconData.left}px`;
+    iconWithText.dom.style.top = `${iconData.top}px`;
+  } else {
+    const iconUrl: string = window.prompt('Please enter icon URL')!;
+    const iconTitle: string = window.prompt('Please enter a Title')!;
+    const iconDescription: string = window.prompt(`Please enter a Description for ${iconTitle}`)!;
 
-  const iconWithText = new IconWithText(iconUrl, iconTitle, iconDescription, 'iconWithText');
-  const backgroundWidth = background.getDom().offsetWidth;
-  const backgroundHeight = background.getDom().offsetHeight;
-  iconWithText.dom.style.left = `${backgroundWidth / 2 - iconWithText.dom.offsetWidth / 2}px`;
-  iconWithText.dom.style.top = `${backgroundHeight / 2 - iconWithText.dom.offsetHeight / 2}px`;
+    iconWithText = new IconWithText(iconUrl, iconTitle, iconDescription, 'iconWithText');
+    const backgroundWidth = background.getDom().offsetWidth;
+    const backgroundHeight = background.getDom().offsetHeight;
+    iconWithText.dom.style.left = `${backgroundWidth / 2 - iconWithText.dom.offsetWidth / 2}px`;
+    iconWithText.dom.style.top = `${backgroundHeight / 2 - iconWithText.dom.offsetHeight / 2}px`;
+  }
 
   parentContainer.appendChild(iconWithText.dom);
 };
 
-export const renderApplication = (parentContainer: HTMLDivElement, applicationWidth: number, applicationHeight: number, applicationBackgroundImage: string) => {
+export const renderApplication = (parentContainer: HTMLDivElement, data: IApplicationData) => {
   parentContainer.innerHTML = '';
+
+  const {
+    applicationHeight,
+    applicationWidth,
+    backgroundImageUrl,
+  } = data;
+
   parentContainer.style.width = `${applicationWidth}px`;
   parentContainer.style.height = `${applicationHeight}px`;
   addDragNDropListeners(parentContainer);
   addContextMenuHandler(parentContainer);
 
   background.setSize(applicationWidth, applicationHeight);
-  background.setBackground(applicationBackgroundImage);
+  background.setBackground(backgroundImageUrl);
 
   parentContainer.appendChild(background.getDom());
+
+  if (data.images && data.images.length > 0) {
+    data.images.forEach((imageData) => {
+      insertImage(imageData.imageUrl, parentContainer, imageData);
+    });
+  }
+
+  if (data.iconsWithText && data.iconsWithText.length > 0) {
+    data.iconsWithText.forEach((iconData) => {
+      insertIconWithText(parentContainer, iconData);
+    });
+  }
 };

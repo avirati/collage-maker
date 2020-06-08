@@ -36,14 +36,21 @@ canvas {
   font-family: Arial, Helvetica, sans-serif;
   color: #f5f5f5;
   cursor: pointer;
+  user-select: none;
+}
+
+.iconWithText img {
+  pointer-events: none;
 }
 
 .iconTitle {
   font-weight: bold;
   font-size: 14px;
   padding: 20px 0;
+  pointer-events: none;
 }
 
 .iconDescription {
   font-size: 12px;
+  pointer-events: none;
 }
