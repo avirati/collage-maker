@@ -11,6 +11,7 @@ class ContextMenu {
   constructor (containerClassName: string, menuItemClassName: string) {
     this.containerClassName = containerClassName;
     this.menuItemClassName = menuItemClassName;
+    document.addEventListener('click', () => this.dom.style.display = 'none');
   }
 
   public renderMenu = (menuItems: IMenuItem[]) => {

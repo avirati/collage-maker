@@ -1,8 +1,11 @@
 import { ICON_SIZE } from '../globalConstants';
+import { applicationData } from '../App';
 
 export class IconWithText {
   public dom: HTMLDivElement = document.createElement('div');
-  constructor (url: string, title: string, description: string, containerClassName: string) {
+  public id: string;
+  constructor (url: string, title: string, description: string, containerClassName: string, id: string) {
+    this.id = id;
     this.dom.className = containerClassName;
     this.loadIcon(url);
     this.loadText(title, 'iconTitle');
@@ -38,6 +41,9 @@ export class IconWithText {
       moving = false;
       pointerX = 0;
       pointerY = 0;
+
+      applicationData.iconsWithText[this.id].left = this.dom.offsetLeft;
+      applicationData.iconsWithText[this.id].top = this.dom.offsetTop;
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {

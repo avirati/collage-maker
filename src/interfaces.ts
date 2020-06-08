@@ -1,4 +1,5 @@
 export interface IImage {
+  id: string;
   imageUrl: string;
   top: number;
   left: number;
@@ -14,6 +15,10 @@ export interface IApplicationData {
   applicationHeight: number;
   backgroundImageUrl: string;
 
-  images?: IImage[];
-  iconsWithText?: IIconsWithText[];
+  images: {
+    [key: string]: IImage;
+  };
+  iconsWithText: {
+    [key: string]: IIconsWithText;
+  };
 }
