@@ -17,6 +17,12 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
         movableElement.canvas.width = image.width;
         movableElement.canvas.height = image.height;
         movableElement.context.drawImage(image, 0, 0);
+
+        // Position canvas in center
+        const backgroundWidth = background.getDom().offsetWidth;
+        const backgroundHeight = background.getDom().offsetHeight;
+        movableElement.canvas.style.left = `${backgroundWidth / 2 - image.width / 2}px`;
+        movableElement.canvas.style.top = `${backgroundHeight / 2 - image.height / 2}px`;
       };
       parentContainer.appendChild(movableElement.canvas);
     };
