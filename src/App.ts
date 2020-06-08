@@ -1,5 +1,13 @@
 import { v4 as uuid } from 'uuid';
 
+import {
+  applicationHeightSelector,
+  applicationWidthSelector,
+  backgroundImageUrlSelector,
+  getApplicationData,
+  iconsWithTextSelector,
+  imagesSelector,
+  setApplicationData, setIconWithText, setImage } from './DataStore';
 import { background } from './components/Background';
 import { getMenu } from './components/ContextMenu';
 import { IconWithText } from './components/IconWithText';
@@ -7,8 +15,6 @@ import { spawnMovableElement } from './components/MovableElements';
 import { IApplicationData, IIconsWithText, IImage } from './interfaces';
 
 const menu = getMenu('menuContainer', 'menuItemContainer');
-
-export let applicationData: IApplicationData;
 
 const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageData?: IImage) => {
   const movableElement = spawnMovableElement();
@@ -23,6 +29,7 @@ const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageDat
       // Position as per data
       movableElement.canvas.style.left = `${imageData.left}px`;
       movableElement.canvas.style.top = `${imageData.top}px`;
+      movableElement.setId(imageData.id);
     } else {
       // Position canvas in center
       const backgroundWidth = background.getDom().offsetWidth;
@@ -33,12 +40,12 @@ const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageDat
       movableElement.canvas.style.top = `${top}px`;
 
       const id = uuid();
-      applicationData.images[id] = {
+      setImage({
         id,
         imageUrl,
         left,
         top,
-      };
+      });
       movableElement.setId(id);
     }
   };
@@ -91,7 +98,7 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
     },
     {
       label: 'Save',
-      menuAction: () => exportJSONData(applicationData),
+      menuAction: () => exportJSONData(getApplicationData()),
     },
   ]);
   parentContainer.appendChild(menu.dom);
@@ -121,14 +128,14 @@ const insertIconWithText = (parentContainer: HTMLDivElement, iconData?: IIconsWi
     iconWithText.dom.style.left = `${left}px`;
     iconWithText.dom.style.top = `${top}px`;
 
-    applicationData.iconsWithText[id] = {
+    setIconWithText({
       description: iconDescription,
       id,
       imageUrl: iconUrl,
       left,
       title: iconTitle,
       top,
-    };
+    });
   }
 
   parentContainer.appendChild(iconWithText.dom);
@@ -147,14 +154,14 @@ const importJSON = (data: IApplicationData, parentContainer: HTMLDivElement) => 
 };
 
 export const renderApplication = (parentContainer: HTMLDivElement, data: IApplicationData) => {
-  applicationData = data;
+  setApplicationData(data);
   parentContainer.innerHTML = '';
 
-  const {
-    applicationHeight,
-    applicationWidth,
-    backgroundImageUrl,
-  } = data;
+  const applicationHeight = applicationHeightSelector();
+  const applicationWidth = applicationWidthSelector();
+  const backgroundImageUrl = backgroundImageUrlSelector();
+  const images = imagesSelector();
+  const icons = iconsWithTextSelector();
 
   parentContainer.style.width = `${applicationWidth}px`;
   parentContainer.style.height = `${applicationHeight}px`;
@@ -166,16 +173,16 @@ export const renderApplication = (parentContainer: HTMLDivElement, data: IApplic
 
   parentContainer.appendChild(background.getDom());
 
-  for (const key in data.images) {
-    if (data.images[key]) {
-      const imageData = data.images[key];
+  for (const key in images) {
+    if (images[key]) {
+      const imageData = images[key];
       insertImage(imageData.imageUrl, parentContainer, imageData);
     }
   }
 
-  for (const key in data.iconsWithText) {
-    if (data.iconsWithText[key]) {
-      const iconData = data.iconsWithText[key];
+  for (const key in icons) {
+    if (icons[key]) {
+      const iconData = icons[key];
       insertIconWithText(parentContainer, iconData);
     }
   }

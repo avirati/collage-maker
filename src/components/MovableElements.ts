@@ -1,5 +1,5 @@
 import { BaseCanvas } from './Canvas';
-import { applicationData } from '../App';
+import { moveImage } from '../DataStore';
 
 class MovableElements extends BaseCanvas {
   constructor () {
@@ -18,8 +18,7 @@ class MovableElements extends BaseCanvas {
     });
     this.canvas.addEventListener('mouseup', () => {
       moving = false;
-      applicationData.images[this.id].left = this.canvas.offsetLeft;
-      applicationData.images[this.id].top = this.canvas.offsetTop;
+      moveImage(this.id, this.canvas.offsetLeft, this.canvas.offsetTop);
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {

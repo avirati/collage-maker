@@ -1,5 +1,5 @@
 import { ICON_SIZE } from '../globalConstants';
-import { applicationData } from '../App';
+import { setIconWithText, moveIconWithText } from '../DataStore';
 
 export class IconWithText {
   public dom: HTMLDivElement = document.createElement('div');
@@ -42,8 +42,7 @@ export class IconWithText {
       pointerX = 0;
       pointerY = 0;
 
-      applicationData.iconsWithText[this.id].left = this.dom.offsetLeft;
-      applicationData.iconsWithText[this.id].top = this.dom.offsetTop;
+      moveIconWithText(this.id, this.dom.offsetLeft, this.dom.offsetTop);
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {
