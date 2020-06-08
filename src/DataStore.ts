@@ -20,6 +20,9 @@ export const setBackgroundImageUrl = (value: string) => data.backgroundImageUrl 
 export const setIconWithText = (iconData: IIconsWithText) => data.iconsWithText[iconData.id] = iconData;
 export const setImage = (imageData: IImage) => data.images[imageData.id] = imageData;
 
+export const deleteImage = (id: string) => delete data.images[id];
+export const deleteIcon = (id: string) => delete data.iconsWithText[id];
+
 export const moveIconWithText = (id: string, left: number, top: number) => {
   data.iconsWithText[id].left = left;
   data.iconsWithText[id].top = top;

@@ -9,12 +9,10 @@ import {
   imagesSelector,
   setApplicationData, setIconWithText, setImage } from './DataStore';
 import { background } from './components/Background';
-import { getMenu } from './components/ContextMenu';
+import { menu } from './components/ContextMenu';
 import { IconWithText } from './components/IconWithText';
 import { spawnMovableElement } from './components/MovableElements';
 import { IApplicationData, IIconsWithText, IImage } from './interfaces';
-
-const menu = getMenu('menuContainer', 'menuItemContainer');
 
 const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageData?: IImage) => {
   const movableElement = spawnMovableElement();
@@ -87,23 +85,22 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
 };
 
 const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
-  menu.renderMenu([
-    {
-      label: 'Insert Icon with Text',
-      menuAction: () => insertIconWithText(parentContainer),
-    },
-    {
-      label: 'Export Collage',
-      menuAction: () => null,
-    },
-    {
-      label: 'Save',
-      menuAction: () => exportJSONData(getApplicationData()),
-    },
-  ]);
-  parentContainer.appendChild(menu.dom);
   parentContainer.addEventListener('contextmenu', (event: MouseEvent) => {
     event.preventDefault();
+    menu.renderMenu([
+      {
+        label: 'Insert Icon with Text',
+        menuAction: () => insertIconWithText(parentContainer),
+      },
+      {
+        label: 'Export Collage',
+        menuAction: () => null,
+      },
+      {
+        label: 'Save',
+        menuAction: () => exportJSONData(getApplicationData()),
+      },
+    ]);
     menu.positionMenu(event.clientX, event.clientY);
   });
 };

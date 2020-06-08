@@ -1,10 +1,26 @@
+import { deleteImage, moveImage } from '../DataStore';
 import { BaseCanvas } from './Canvas';
-import { moveImage } from '../DataStore';
+import { menu } from './ContextMenu';
 
 class MovableElements extends BaseCanvas {
   constructor () {
     super();
     this.addDragNDropListeners();
+    this.addContextMenuHandler();
+  }
+
+  private addContextMenuHandler = () => {
+    this.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      menu.renderMenu([{
+        label: 'Delete Element',
+        menuAction: () => this.delete(),
+      }]);
+
+      menu.positionMenu(event.clientX, event.clientY);
+    });
   }
 
   private addDragNDropListeners = () => {
@@ -12,9 +28,11 @@ class MovableElements extends BaseCanvas {
     let pointerX = 0;
     let pointerY = 0;
     this.canvas.addEventListener('mousedown', (event: MouseEvent) => {
-      moving = true;
-      pointerX = event.offsetX;
-      pointerY = event.offsetY;
+      if (event.which === 1) {
+        moving = true;
+        pointerX = event.offsetX;
+        pointerY = event.offsetY;
+      }
     });
     this.canvas.addEventListener('mouseup', () => {
       moving = false;
@@ -31,6 +49,12 @@ class MovableElements extends BaseCanvas {
       this.canvas.style.left = `${left - pointerX}px`;
       this.canvas.style.top = `${top - pointerY}px`;
     });
+  }
+
+  public delete = () => {
+    deleteImage(this.id);
+    const dom = document.querySelector(`[data-id='${this.id}']`);
+    dom?.remove();
   }
 }
 

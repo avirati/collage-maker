@@ -1,4 +1,4 @@
-export class BaseCanvas {
+export abstract class BaseCanvas {
   public canvas: HTMLCanvasElement;
   public context: CanvasRenderingContext2D;
   public id: string;
@@ -9,7 +9,10 @@ export class BaseCanvas {
     this.id = '';
   }
 
-  public setId = (id: string) => this.id = id;
+  public setId = (id: string) => {
+    this.id = id;
+    this.canvas.setAttribute('data-id', id);
+  }
 
   public getDom = () => this.canvas;
 }

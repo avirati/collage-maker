@@ -12,6 +12,7 @@ class ContextMenu {
     this.containerClassName = containerClassName;
     this.menuItemClassName = menuItemClassName;
     document.addEventListener('click', () => this.dom.style.display = 'none');
+    document.body.appendChild(this.dom);
   }
 
   public renderMenu = (menuItems: IMenuItem[]) => {
@@ -39,4 +40,6 @@ class ContextMenu {
   }
 }
 
-export const getMenu = (containerClassName: string, menuItemClassName: string) => new ContextMenu(containerClassName, menuItemClassName);
+const getMenu = (containerClassName: string, menuItemClassName: string) => new ContextMenu(containerClassName, menuItemClassName);
+
+export const menu = getMenu('menuContainer', 'menuItemContainer');
