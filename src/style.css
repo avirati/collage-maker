@@ -14,6 +14,7 @@ canvas {
   background-color: #f5f5f5;
   color: #333;
   font-family: arial;
+  z-index: 1000;
 }
 
 .menuItemContainer {
@@ -24,4 +25,25 @@ canvas {
 
 .menuItemContainer:last-child {
   padding-bottom: 10px;
+}
+
+.iconWithText {
+  width: 300px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f5f5f5;
+  cursor: pointer;
+}
+
+.iconTitle {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+.iconDescription {
+  font-size: 12px;
 }

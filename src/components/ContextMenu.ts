@@ -1,5 +1,6 @@
-interface IMenuItems {
+interface IMenuItem {
   label: string;
+  menuAction: () => void;
 }
 
 class ContextMenu {
@@ -12,7 +13,7 @@ class ContextMenu {
     this.menuItemClassName = menuItemClassName;
   }
 
-  public renderMenu = (menuItems: IMenuItems[]) => {
+  public renderMenu = (menuItems: IMenuItem[]) => {
     this.dom.className = this.containerClassName;
     this.dom.style.display = 'none';
     this.dom.innerHTML = '';
@@ -20,6 +21,7 @@ class ContextMenu {
       const menuDom = document.createElement('div');
       menuDom.innerText = item.label;
       menuDom.className = this.menuItemClassName;
+      menuDom.onclick = () => this.onMenuItemClicked(item);
       this.dom.appendChild(menuDom);
     });
   }
@@ -28,6 +30,11 @@ class ContextMenu {
     this.dom.style.display = 'block';
     this.dom.style.left = `${left - 20}px`;
     this.dom.style.top = `${top - 20}px`;
+  }
+
+  private onMenuItemClicked = (item: IMenuItem) => {
+    this.dom.style.display = 'none';
+    item.menuAction();
   }
 }
 
