@@ -1,3 +1,4 @@
+import * as html2canvas from 'html2canvas';
 import { v4 as uuid } from 'uuid';
 
 import {
@@ -94,7 +95,7 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
       },
       {
         label: 'Export Collage',
-        menuAction: () => null,
+        menuAction: () => exportResults(parentContainer),
       },
       {
         label: 'Save',
@@ -149,6 +150,16 @@ const exportJSONData = (applicationData: IApplicationData) => {
 const importJSON = (data: IApplicationData, parentContainer: HTMLDivElement) => {
   renderApplication(parentContainer, data);
 };
+
+const exportResults = async (parentContainer: HTMLDivElement) => {
+  const result = await html2canvas(parentContainer, { useCORS: true, allowTaint: false });
+  result.toBlob((blob) => {
+    const link = document.createElement('a');
+    link.download = `${Date.now()}.png`;
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+  }, 'image/png');
+}
 
 export const renderApplication = (parentContainer: HTMLDivElement, data: IApplicationData) => {
   setApplicationData(data);

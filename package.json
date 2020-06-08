@@ -8,9 +8,11 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@types/html2canvas": "^0.0.35",
     "@types/uuid": "^8.0.0",
     "css-loader": "^3.5.3",
     "html-webpack-plugin": "^4.3.0",
+    "html2canvas": "^1.0.0-rc.5",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
     "tslint": "^6.1.2",
