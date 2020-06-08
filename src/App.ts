@@ -1,5 +1,8 @@
 import { background } from './components/Background';
+import { getMenu } from './components/ContextMenu';
 import { spawnMovableElement } from './components/MovableElements';
+
+const menu = getMenu('menuContainer', 'menuItemContainer');
 
 const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
   const FileSelectHandler = (event: DragEvent) => {
@@ -37,12 +40,35 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
   parentContainer.addEventListener('dragover', FileDragHover, false);
   parentContainer.addEventListener('dragleave', FileDragHover, false);
   parentContainer.addEventListener('drop', FileSelectHandler, false);
-}
+};
+
+export const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
+  menu.renderMenu([
+    {
+      label: 'Insert Icon with Text',
+    },
+    {
+      label: 'Export Collage',
+    },
+    {
+      label: 'Save',
+    },
+    {
+      label: 'Load Saved Collage',
+    },
+  ]);
+  parentContainer.appendChild(menu.dom);
+  parentContainer.addEventListener('contextmenu', (event: MouseEvent) => {
+    event.preventDefault();
+    menu.positionMenu(event.clientX, event.clientY);
+  });
+};
 
 export const renderApplication = (parentContainer: HTMLDivElement, applicationWidth: number, applicationHeight: number) => {
   parentContainer.style.width = `${applicationWidth}px`;
   parentContainer.style.height = `${applicationHeight}px`;
   addDragNDropListeners(parentContainer);
+  addContextMenuHandler(parentContainer);
 
   background.setSize(applicationWidth, applicationHeight);
 
