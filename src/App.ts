@@ -39,7 +39,12 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
   parentContainer.addEventListener('drop', FileSelectHandler, false);
 }
 
-export const renderApplication = (parentContainer: HTMLDivElement) => {
-  parentContainer.appendChild(background.getDom());
+export const renderApplication = (parentContainer: HTMLDivElement, applicationWidth: number, applicationHeight: number) => {
+  parentContainer.style.width = `${applicationWidth}px`;
+  parentContainer.style.height = `${applicationHeight}px`;
   addDragNDropListeners(parentContainer);
+
+  background.setSize(applicationWidth, applicationHeight);
+
+  parentContainer.appendChild(background.getDom());
 };
