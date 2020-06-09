@@ -56,24 +56,14 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
     event.stopPropagation();
     event.preventDefault();
     const file: File = event.dataTransfer!.files[0];
-    const isJSON = file.type === 'application/json';
 
     const reader = new FileReader();
 
     reader.onload = () => {
-      if (isJSON) {
-        const data: IApplicationData = JSON.parse(reader.result as string);
-        importJSON(data, parentContainer);
-      } else {
-        insertImage(reader.result as string, parentContainer);
-      }
+      insertImage(reader.result as string, parentContainer);
     };
 
-    if (isJSON) {
-      reader.readAsText(file);
-    } else {
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
   };
   const FileDragHover = (event: DragEvent) => {
     event.stopPropagation();
@@ -176,15 +166,9 @@ const insertIconWithText = async (parentContainer: HTMLDivElement, iconData?: II
 };
 
 const exportJSONData = (applicationData: IApplicationData) => {
-  const link = document.createElement('a');
-  link.download = `${Date.now()}.json`;
-  const blob = new Blob([JSON.stringify(applicationData)], { type: 'application/json' });
-  link.href = window.URL.createObjectURL(blob);
-  link.click();
-};
-
-const importJSON = (data: IApplicationData, parentContainer: HTMLDivElement) => {
-  renderApplication(parentContainer, data);
+  document.dispatchEvent(new CustomEvent('collageExport', {
+    detail: applicationData,
+  }));
 };
 
 const exportResults = async (parentContainer: HTMLDivElement) => {
