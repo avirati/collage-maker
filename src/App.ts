@@ -106,14 +106,50 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
   });
 };
 
-const insertIconWithText = (parentContainer: HTMLDivElement, iconData?: IIconsWithText) => {
+const getLocalSvg = (): Promise<string> => new Promise((resolve, reject) => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/svg+xml'
+  input.onchange = (event) => {
+    const element: HTMLInputElement = event.target! as HTMLInputElement;
+    const file = element.files && element.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d')!;
+      const DOMURL = self.URL || self.webkitURL || self;
+      const img = new Image();
+      const svg = new Blob([content], {type: 'image/svg+xml;charset=utf-8'});
+      const url = DOMURL.createObjectURL(svg);
+      img.onload = () => {
+          context.drawImage(img, 0, 0);
+          const png = canvas.toDataURL('image/png');
+          DOMURL.revokeObjectURL(png);
+          resolve(png);
+      };
+      img.src = url;
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsText(file!);
+  };
+  input.click();
+});
+
+const insertIconWithText = async (parentContainer: HTMLDivElement, iconData?: IIconsWithText) => {
   let iconWithText: IconWithText;
   if (iconData) {
     iconWithText = new IconWithText(iconData.imageUrl, iconData.title, iconData.description, 'iconWithText', iconData.id);
     iconWithText.dom.style.left = `${iconData.left}px`;
     iconWithText.dom.style.top = `${iconData.top}px`;
   } else {
-    const iconUrl: string = window.prompt('Please enter icon URL')!;
+    const iconUrl: string = await getLocalSvg();
     const iconTitle: string = window.prompt('Please enter a Title')!;
     const iconDescription: string = window.prompt(`Please enter a Description for ${iconTitle}`)!;
 
@@ -152,7 +188,7 @@ const importJSON = (data: IApplicationData, parentContainer: HTMLDivElement) => 
 };
 
 const exportResults = async (parentContainer: HTMLDivElement) => {
-  const result = await html2canvas(parentContainer, { useCORS: true, allowTaint: false });
+  const result = await html2canvas(parentContainer, { useCORS: true, allowTaint: true });
   result.toBlob((blob) => {
     const link = document.createElement('a');
     link.download = `${Date.now()}.png`;
