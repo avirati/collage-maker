@@ -6,21 +6,6 @@ class MovableElements extends BaseCanvas {
   constructor () {
     super();
     this.addDragNDropListeners();
-    this.addContextMenuHandler();
-  }
-
-  private addContextMenuHandler = () => {
-    this.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      menu.renderMenu([{
-        label: 'Delete Element',
-        menuAction: () => this.delete(),
-      }]);
-
-      menu.positionMenu(event.clientX, event.clientY);
-    });
   }
 
   private addDragNDropListeners = () => {

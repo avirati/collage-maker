@@ -8,7 +8,7 @@ import {
   getApplicationData,
   iconsWithTextSelector,
   imagesSelector,
-  setApplicationData, setIconWithText, setImage } from './DataStore';
+  setApplicationData, setIconWithText, setImage, deleteIcon, deleteImage } from './DataStore';
 import { background } from './components/Background';
 import { menu } from './components/ContextMenu';
 import { IconWithText } from './components/IconWithText';
@@ -77,6 +77,7 @@ const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
 
 const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
   parentContainer.addEventListener('contextmenu', (event: MouseEvent) => {
+    const element = event.target as HTMLElement;
     event.preventDefault();
     menu.renderMenu([
       {
@@ -90,6 +91,17 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
       {
         label: 'Save',
         menuAction: () => exportJSONData(getApplicationData()),
+      },
+      {
+        label: 'Delete Element',
+        menuAction: () => {
+          const elementID = element.getAttribute('data-id');
+          if (elementID) {
+            deleteIcon(elementID);
+            deleteImage(elementID);
+            element.remove();
+          }
+        },
       },
     ]);
     menu.positionMenu(event.clientX, event.clientY);

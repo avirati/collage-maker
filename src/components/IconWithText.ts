@@ -14,21 +14,6 @@ export class IconWithText {
     this.loadText(description, 'iconDescription');
 
     this.addDragNDropListeners();
-    this.addContextMenuHandler();
-  }
-
-  private addContextMenuHandler = () => {
-    this.dom.addEventListener('contextmenu', (event: MouseEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      menu.renderMenu([{
-        label: 'Delete Element',
-        menuAction: () => this.delete(),
-      }]);
-
-      menu.positionMenu(event.clientX, event.clientY);
-    });
   }
 
   private loadIcon = (url: string) => {
