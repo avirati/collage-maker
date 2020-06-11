@@ -1,6 +1,4 @@
 import { deleteIcon, moveIconWithText } from '../DataStore';
-import { ICON_SIZE } from '../globalConstants';
-import { menu } from './ContextMenu';
 
 export class IconWithText {
   public dom: HTMLDivElement = document.createElement('div');
@@ -19,7 +17,6 @@ export class IconWithText {
   private loadIcon = (url: string) => {
     const image = document.createElement('img');
     image.src = url;
-    image.width = ICON_SIZE;
     this.dom.appendChild(image);
   }
 

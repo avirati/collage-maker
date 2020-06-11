@@ -111,7 +111,7 @@ const addContextMenuHandler = (parentContainer: HTMLDivElement) => {
 const getLocalSvg = (): Promise<string> => new Promise((resolve, reject) => {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = 'image/svg+xml'
+  input.accept = 'image/svg+xml';
   input.onchange = (event) => {
     const element: HTMLInputElement = event.target! as HTMLInputElement;
     const file = element.files && element.files[0];
@@ -127,7 +127,9 @@ const getLocalSvg = (): Promise<string> => new Promise((resolve, reject) => {
       const svg = new Blob([content], {type: 'image/svg+xml;charset=utf-8'});
       const url = DOMURL.createObjectURL(svg);
       img.onload = () => {
-          context.drawImage(img, 0, 0);
+          canvas.width = img.width;
+          canvas.height = img.height;
+          context.drawImage(img, 0, 0, img.width, img.height);
           const png = canvas.toDataURL('image/png');
           DOMURL.revokeObjectURL(png);
           resolve(png);
