@@ -17,8 +17,8 @@ document.addEventListener('collageImport', (event) => {
 
 document.dispatchEvent(new CustomEvent('collageImport', {
   detail: {
-    applicationHeight: 600,
-    applicationWidth: 800,
+    applicationHeight: window.screen.availHeight,
+    applicationWidth: window.screen.availWidth,
     backgroundImageUrl: BACKGROUND_IMAGE,
     iconsWithText: {},
     images: {},
