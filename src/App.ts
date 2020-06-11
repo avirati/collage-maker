@@ -119,22 +119,8 @@ const getLocalSvg = (): Promise<string> => new Promise((resolve, reject) => {
 
     reader.onload = (e) => {
       const content = e.target?.result as string;
-
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d')!;
-      const DOMURL = self.URL || self.webkitURL || self;
-      const img = new Image();
-      const svg = new Blob([content], {type: 'image/svg+xml;charset=utf-8'});
-      const url = DOMURL.createObjectURL(svg);
-      img.onload = () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          context.drawImage(img, 0, 0, img.width, img.height);
-          const png = canvas.toDataURL('image/png');
-          DOMURL.revokeObjectURL(png);
-          resolve(png);
-      };
-      img.src = url;
+      const base64 = `data:image/svg+xml;base64,${window.btoa(content)}`;
+      resolve(base64);
     };
 
     reader.onerror = (error) => {
