@@ -57,6 +57,9 @@ export class IconWithText {
       this.dom.style.left = `${left - pointerX}px`;
       this.dom.style.top = `${top - pointerY}px`;
     });
+    document.addEventListener('click', () => {
+      moving = false;
+    });
   }
 
   public delete = () => {
