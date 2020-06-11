@@ -3,8 +3,10 @@
   position: relative;
 }
 
-canvas {
+img.elements {
   position: absolute;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .menuContainer {

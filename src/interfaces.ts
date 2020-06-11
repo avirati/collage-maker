@@ -3,6 +3,7 @@ export interface IImage {
   imageUrl: string;
   top: number;
   left: number;
+  scale: number;
 }
 
 export interface IIconsWithText extends IImage {

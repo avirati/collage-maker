@@ -5,10 +5,15 @@ import {
   applicationHeightSelector,
   applicationWidthSelector,
   backgroundImageUrlSelector,
+  deleteIcon,
+  deleteImage,
   getApplicationData,
   iconsWithTextSelector,
   imagesSelector,
-  setApplicationData, setIconWithText, setImage, deleteIcon, deleteImage } from './DataStore';
+  setApplicationData,
+  setIconWithText,
+  setImage,
+} from './DataStore';
 import { background } from './components/Background';
 import { menu } from './components/ContextMenu';
 import { IconWithText } from './components/IconWithText';
@@ -17,38 +22,37 @@ import { IApplicationData, IIconsWithText, IImage } from './interfaces';
 
 const insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageData?: IImage) => {
   const movableElement = spawnMovableElement();
-  const image = document.createElement('img');
-  image.src = imageUrl;
-  image.onload = () => {
-    movableElement.canvas.width = image.width;
-    movableElement.canvas.height = image.height;
-    movableElement.context.drawImage(image, 0, 0);
-
+  movableElement.image.src = imageUrl;
+  movableElement.image.onload = () => {
     if (imageData) {
       // Position as per data
-      movableElement.canvas.style.left = `${imageData.left}px`;
-      movableElement.canvas.style.top = `${imageData.top}px`;
+      movableElement.image.style.left = `${imageData.left}px`;
+      movableElement.image.style.top = `${imageData.top}px`;
       movableElement.setId(imageData.id);
+      movableElement.image.height = movableElement.image.offsetHeight * imageData.scale;
     } else {
+      const scale = Number(window.prompt('Please enter the scale percentage to resize (0 - 100)')) / 100;
+      movableElement.image.height = movableElement.image.offsetHeight * scale;
       // Position canvas in center
       const backgroundWidth = background.getDom().offsetWidth;
       const backgroundHeight = background.getDom().offsetHeight;
-      const left = backgroundWidth / 2 - image.width / 2;
-      const top = backgroundHeight / 2 - image.height / 2;
-      movableElement.canvas.style.left = `${left}px`;
-      movableElement.canvas.style.top = `${top}px`;
+      const left = backgroundWidth / 2 - movableElement.image.offsetWidth / 2;
+      const top = backgroundHeight / 2 - movableElement.image.offsetHeight / 2;
+      movableElement.image.style.left = `${left}px`;
+      movableElement.image.style.top = `${top}px`;
 
       const id = uuid();
       setImage({
         id,
         imageUrl,
         left,
+        scale,
         top,
       });
       movableElement.setId(id);
     }
   };
-  parentContainer.appendChild(movableElement.canvas);
+  parentContainer.appendChild(movableElement.image);
 };
 
 const addDragNDropListeners = (parentContainer: HTMLDivElement) => {
@@ -157,6 +161,7 @@ const insertIconWithText = async (parentContainer: HTMLDivElement, iconData?: II
       id,
       imageUrl: iconUrl,
       left,
+      scale: 1,
       title: iconTitle,
       top,
     });

@@ -1,18 +1,17 @@
 export abstract class BaseCanvas {
-  public canvas: HTMLCanvasElement;
-  public context: CanvasRenderingContext2D;
+  public image: HTMLImageElement;
   public id: string;
 
   constructor() {
-    this.canvas = document.createElement('canvas');
-    this.context = this.canvas.getContext('2d')!;
+    this.image = document.createElement('img');
+    this.image.className = 'elements';
     this.id = '';
   }
 
   public setId = (id: string) => {
     this.id = id;
-    this.canvas.setAttribute('data-id', id);
+    this.image.setAttribute('data-id', id);
   }
 
-  public getDom = () => this.canvas;
+  public getDom = () => this.image;
 }

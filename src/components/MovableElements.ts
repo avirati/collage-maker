@@ -1,8 +1,7 @@
 import { deleteImage, moveImage } from '../DataStore';
 import { BaseCanvas } from './Canvas';
-import { menu } from './ContextMenu';
 
-class MovableElements extends BaseCanvas {
+class MovableElement extends BaseCanvas {
   constructor () {
     super();
     this.addDragNDropListeners();
@@ -12,16 +11,16 @@ class MovableElements extends BaseCanvas {
     let moving = false;
     let pointerX = 0;
     let pointerY = 0;
-    this.canvas.addEventListener('mousedown', (event: MouseEvent) => {
+    this.image.addEventListener('mousedown', (event: MouseEvent) => {
       if (event.which === 1) {
         moving = true;
         pointerX = event.offsetX;
         pointerY = event.offsetY;
       }
     });
-    this.canvas.addEventListener('mouseup', () => {
+    this.image.addEventListener('mouseup', () => {
       moving = false;
-      moveImage(this.id, this.canvas.offsetLeft, this.canvas.offsetTop);
+      moveImage(this.id, this.image.offsetLeft, this.image.offsetTop);
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {
@@ -31,8 +30,8 @@ class MovableElements extends BaseCanvas {
       const left = event.clientX;
       const top = event.clientY;
 
-      this.canvas.style.left = `${left - pointerX}px`;
-      this.canvas.style.top = `${top - pointerY}px`;
+      this.image.style.left = `${left - pointerX}px`;
+      this.image.style.top = `${top - pointerY}px`;
     });
   }
 
@@ -43,4 +42,4 @@ class MovableElements extends BaseCanvas {
   }
 }
 
-export const spawnMovableElement = () => new MovableElements();
+export const spawnMovableElement = () => new MovableElement();
