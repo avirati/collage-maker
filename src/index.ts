@@ -13,25 +13,3 @@ document.addEventListener('collageImport', (event) => {
     (event as CustomEvent).detail as IApplicationData,
   );
 });
-
-document.dispatchEvent(new CustomEvent('collageImport', {
-  detail: {
-    applicationHeight: window.innerHeight,
-    applicationWidth: window.innerWidth,
-    backgroundImageUrl: BACKGROUND_IMAGE,
-    containerId: 'containerOne',
-    iconsWithText: {},
-    images: {},
-  },
-}));
-
-document.dispatchEvent(new CustomEvent('collageImport', {
-  detail: {
-    applicationHeight: window.innerHeight,
-    applicationWidth: window.innerWidth,
-    backgroundImageUrl: BACKGROUND_IMAGE,
-    containerId: 'containerTwo',
-    iconsWithText: {},
-    images: {},
-  },
-}));
