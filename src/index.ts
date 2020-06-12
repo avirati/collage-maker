@@ -13,3 +13,5 @@ document.addEventListener('collageImport', (event) => {
     (event as CustomEvent).detail as IApplicationData,
   );
 });
+
+document.dispatchEvent(new CustomEvent('collageReady'));
