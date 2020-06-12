@@ -122,10 +122,10 @@ export class Application {
           label: 'Insert Icon with Text',
           menuAction: () => this.insertIconWithText(parentContainer),
         },
-        {
-          label: 'Export Collage',
-          menuAction: () => this.exportResults(parentContainer),
-        },
+        // {
+        //   label: 'Export Collage',
+        //   menuAction: () => this.exportResults(parentContainer),
+        // },
         {
           label: 'Save',
           menuAction: () => this.exportJSONData(this.dataStore.getApplicationData()),
