@@ -1,6 +1,6 @@
-import { BaseCanvas } from './Canvas';
+import { Base } from './Base';
 
-export class Background extends BaseCanvas {
+export class Background extends Base {
   public setSize = (width: number, height: number) => {
     this.image.width = width;
     this.image.height = height;
@@ -10,5 +10,3 @@ export class Background extends BaseCanvas {
     this.image.src = url;
   }
 }
-
-export const background = new Background();

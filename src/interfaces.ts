@@ -15,6 +15,7 @@ export interface IApplicationData {
   applicationWidth: number;
   applicationHeight: number;
   backgroundImageUrl: string;
+  containerId: string;
 
   images: {
     [key: string]: IImage;

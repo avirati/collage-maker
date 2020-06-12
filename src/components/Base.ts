@@ -1,4 +1,4 @@
-export abstract class BaseCanvas {
+export abstract class Base {
   public image: HTMLImageElement;
   public id: string;
 

@@ -1,9 +1,11 @@
-import { deleteImage, moveImage } from '../DataStore';
-import { BaseCanvas } from './Canvas';
+import { DataStore } from '../DataStore';
+import { Base } from './Base';
 
-class MovableElement extends BaseCanvas {
-  constructor () {
+class MovableElement extends Base {
+  private dataStore: DataStore;
+  constructor (dataStore: DataStore) {
     super();
+    this.dataStore = dataStore;
     this.addDragNDropListeners();
   }
 
@@ -20,7 +22,7 @@ class MovableElement extends BaseCanvas {
     });
     this.image.addEventListener('mouseup', () => {
       moving = false;
-      moveImage(this.id, this.image.offsetLeft, this.image.offsetTop);
+      this.dataStore.moveImage(this.id, this.image.offsetLeft, this.image.offsetTop);
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {
@@ -36,10 +38,10 @@ class MovableElement extends BaseCanvas {
   }
 
   public delete = () => {
-    deleteImage(this.id);
+    this.dataStore.deleteImage(this.id);
     const dom = document.querySelector(`[data-id='${this.id}']`);
     dom?.remove();
   }
 }
 
-export const spawnMovableElement = () => new MovableElement();
+export const spawnMovableElement = (dataStore: DataStore) => new MovableElement(dataStore);

@@ -1,10 +1,19 @@
-import { deleteIcon, moveIconWithText } from '../DataStore';
+import { DataStore } from '../DataStore';
 
 export class IconWithText {
   public dom: HTMLDivElement = document.createElement('div');
   public id: string;
-  constructor (url: string, title: string, description: string, containerClassName: string, id: string) {
+  private dataStore: DataStore;
+  constructor (
+    url: string,
+    title: string,
+    description: string,
+    containerClassName: string,
+    id: string,
+    dataStore: DataStore,
+  ) {
     this.id = id;
+    this.dataStore = dataStore;
     this.dom.setAttribute('data-id', id);
     this.dom.className = containerClassName;
     this.loadIcon(url);
@@ -44,7 +53,7 @@ export class IconWithText {
       pointerX = 0;
       pointerY = 0;
 
-      moveIconWithText(this.id, this.dom.offsetLeft, this.dom.offsetTop);
+      this.dataStore.moveIconWithText(this.id, this.dom.offsetLeft, this.dom.offsetTop);
     });
     document.addEventListener('mousemove', (event: MouseEvent) => {
       if (!moving) {
@@ -63,7 +72,7 @@ export class IconWithText {
   }
 
   public delete = () => {
-    deleteIcon(this.id);
+    this.dataStore.deleteIcon(this.id);
     const dom = document.querySelector(`[data-id='${this.id}']`);
     dom?.remove();
   }
