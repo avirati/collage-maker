@@ -4,6 +4,7 @@ export class IconWithText {
   public dom: HTMLDivElement = document.createElement('div');
   public id: string;
   private dataStore: DataStore;
+  private background: HTMLImageElement;
   constructor (
     url: string,
     title: string,
@@ -11,9 +12,11 @@ export class IconWithText {
     containerClassName: string,
     id: string,
     dataStore: DataStore,
+    background: HTMLImageElement,
   ) {
     this.id = id;
     this.dataStore = dataStore;
+    this.background = background;
     this.dom.setAttribute('data-id', id);
     this.dom.className = containerClassName;
     this.loadIcon(url);
@@ -60,8 +63,10 @@ export class IconWithText {
         return;
       }
 
-      const left = event.clientX;
-      const top = event.clientY;
+      const viewportOffset = this.background.getBoundingClientRect();
+
+      const left = event.clientX - viewportOffset.left;
+      const top = event.clientY - viewportOffset.top;
 
       this.dom.style.left = `${left - pointerX}px`;
       this.dom.style.top = `${top - pointerY}px`;

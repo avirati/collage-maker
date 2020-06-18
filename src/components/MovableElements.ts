@@ -3,9 +3,11 @@ import { Base } from './Base';
 
 class MovableElement extends Base {
   private dataStore: DataStore;
-  constructor (dataStore: DataStore) {
+  private background: HTMLImageElement;
+  constructor (dataStore: DataStore, background: HTMLImageElement) {
     super();
     this.dataStore = dataStore;
+    this.background = background;
     this.addDragNDropListeners();
   }
 
@@ -29,8 +31,10 @@ class MovableElement extends Base {
         return;
       }
 
-      const left = event.clientX;
-      const top = event.clientY;
+      const viewportOffset = this.background.getBoundingClientRect();
+
+      const left = event.clientX - viewportOffset.left;
+      const top = event.clientY - viewportOffset.top;
 
       this.image.style.left = `${left - pointerX}px`;
       this.image.style.top = `${top - pointerY}px`;
@@ -44,4 +48,4 @@ class MovableElement extends Base {
   }
 }
 
-export const spawnMovableElement = (dataStore: DataStore) => new MovableElement(dataStore);
+export const spawnMovableElement = (dataStore: DataStore, background: HTMLImageElement) => new MovableElement(dataStore, background);

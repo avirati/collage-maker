@@ -55,7 +55,7 @@ export class Application {
   }
 
   private insertImage = (imageUrl: string, parentContainer: HTMLDivElement, imageData?: IImage) => {
-    const movableElement = spawnMovableElement(this.dataStore);
+    const movableElement = spawnMovableElement(this.dataStore, this.background.image);
     movableElement.image.src = imageUrl;
     movableElement.image.onload = () => {
       if (imageData) {
@@ -173,7 +173,15 @@ export class Application {
   private insertIconWithText = async (parentContainer: HTMLDivElement, iconData?: IIconsWithText) => {
     let iconWithText: IconWithText;
     if (iconData) {
-      iconWithText = new IconWithText(iconData.imageUrl, iconData.title, iconData.description, 'iconWithText', iconData.id, this.dataStore);
+      iconWithText = new IconWithText(
+        iconData.imageUrl,
+        iconData.title,
+        iconData.description,
+        'iconWithText',
+        iconData.id,
+        this.dataStore,
+        this.background.image,
+      );
       iconWithText.dom.style.left = `${iconData.left}px`;
       iconWithText.dom.style.top = `${iconData.top}px`;
     } else {
@@ -182,7 +190,15 @@ export class Application {
       const iconDescription: string = window.prompt(`Please enter a Description for ${iconTitle}`)!;
 
       const id = uuid();
-      iconWithText = new IconWithText(iconUrl, iconTitle, iconDescription, 'iconWithText', id, this.dataStore);
+      iconWithText = new IconWithText(
+        iconUrl,
+        iconTitle,
+        iconDescription,
+        'iconWithText',
+        id,
+        this.dataStore,
+        this.background.image,
+      );
       const backgroundWidth = this.background.getDom().offsetWidth;
       const backgroundHeight = this.background.getDom().offsetHeight;
       const left = backgroundWidth / 2 - iconWithText.dom.offsetWidth / 2;
