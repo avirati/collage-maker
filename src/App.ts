@@ -63,10 +63,10 @@ export class Application {
         movableElement.image.style.left = `${imageData.left}px`;
         movableElement.image.style.top = `${imageData.top}px`;
         movableElement.setId(imageData.id);
-        movableElement.image.height = movableElement.image.offsetHeight * imageData.scale;
+        movableElement.image.height = movableElement.image.offsetHeight / imageData.scale;
       } else {
-        const scale = 1 / Number(window.prompt('Please enter the scale factor to resize (1 - X)'));
-        movableElement.image.height = movableElement.image.offsetHeight * scale;
+        const scale = Number(window.prompt('Please enter the scale factor to resize (1 - X)'));
+        movableElement.image.height = movableElement.image.offsetHeight / scale;
         // Position canvas in center
         const backgroundWidth = this.background.getDom().offsetWidth;
         const backgroundHeight = this.background.getDom().offsetHeight;
