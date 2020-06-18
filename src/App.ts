@@ -65,7 +65,7 @@ export class Application {
         movableElement.setId(imageData.id);
         movableElement.image.height = movableElement.image.offsetHeight * imageData.scale;
       } else {
-        const scale = Number(window.prompt('Please enter the scale percentage to resize (0 - 100)')) / 100;
+        const scale = 1 / Number(window.prompt('Please enter the scale factor to resize (1 - X)'));
         movableElement.image.height = movableElement.image.offsetHeight * scale;
         // Position canvas in center
         const backgroundWidth = this.background.getDom().offsetWidth;
