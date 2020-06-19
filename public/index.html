@@ -47,6 +47,16 @@
           }
         };
 
+        document.addEventListener('collageExport', (event) => {
+          console.log(event.detail);
+        });
+
+        document.addEventListener('collageImport', (event) => {
+          new window.Application().renderApplication(
+            event.detail,
+          );
+        });
+
         document.dispatchEvent(new CustomEvent('collageImport', {
           detail: {
             applicationHeight: window.innerHeight,
